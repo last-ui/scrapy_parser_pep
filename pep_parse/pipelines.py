@@ -9,13 +9,11 @@ class PepParsePipeline:
         self.statuses = {}
 
     def process_item(self, item, spider):
-        status = item['status']
-        self.statuses[status] = self.statuses.get(status, 0) + 1
+        self.statuses[item['status']] = self.statuses.get(item['status'], 0)+1
         return item
 
     def close_spider(self, spider):
-        now = dt.datetime.now()
-        now_formatted = now.strftime(DATETIME_FORMAT)
+        now_formatted = dt.datetime.now().strftime(DATETIME_FORMAT)
         file_name = f'status_summary_{now_formatted}.csv'
         file_path = BASE_DIR / 'results' / file_name
         total = sum(self.statuses.values())
